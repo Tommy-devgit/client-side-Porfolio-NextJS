@@ -41,8 +41,8 @@
   --foreground: #ffffff;
   --primary: #1c1c22;
   --primary-foreground: #ffffff;
-  --accent: #00e187;
-  --accent-hover: #00ffaa;
+  --accent: #0087e1;
+  --accent-hover: #00aaff;
   --secondary: #9680ff;
   --secondary-foreground: #d0cfff;
   --muted: #555555;
@@ -59,8 +59,8 @@
   --foreground: #eaeaea;
   --primary: #9290ff;
   --primary-foreground: #121217;
-  --accent: #00e187;
-  --accent-hover: #00ffaa;
+  --accent: #0087e1;
+  --accent-hover: #00aaff;
   --secondary: #2799ff;
   --secondary-foreground: #eaeaea;
   --muted: #555555;
@@ -87,29 +87,14 @@
     transition: background-color 0.3s, color 0.3s;
   }
 
-  a, button {
-    color: var(--foreground);
-    text-decoration: none;
-    cursor: pointer;
-    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  .h1 {
+    @apply text-[48px] xl:text-[80px] leading-[1.1] font-semibold;
   }
-
-  a:hover, button:hover {
-    color: var(--accent-hover);
+  .h2 {
+    @apply text-[36px] xl:text-[48px] leading-[1.1] font-semibold;
   }
-
-  input, textarea, select, button {
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    background-color: var(--background);
-    color: var(--foreground);
-    outline: none;
-    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  }
-
-  input:focus, textarea:focus, select:focus, button:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px var(--ring);
+  .h3 {
+    @apply text-[20px] xl:text-[24px] leading-[1.1] font-semibold;
   }
 
   /* -------------------------------
