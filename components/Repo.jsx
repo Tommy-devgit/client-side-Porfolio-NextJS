@@ -1,10 +1,19 @@
 // components/Repo.jsx
 import Link from "next/link";
+import { FaGithub} from "react-icons/fa";
+
 
 export default function Repo({ repos }) {
   return (
     <section className="max-w-6xl mx-auto px-4 py-12">
-      <h2 className="text-3xl font-bold mb-8">Featured Repository's</h2>
+      <div className="flex flex-1 justify-between">
+        <h2 className="text-3xl font-bold mb-8">Featured Repository's</h2>
+        <Link 
+          href="https://github.com/Tommy-devgit"
+        >
+          <FaGithub className="w-9 h-9 border border-accent rounded-full flex justify-center items-center text-accent text-base hover:bg-accent hover:text-primary hover:transition-all duration-500" />
+        </Link>
+      </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {repos?.map((repo) => (
           <div
