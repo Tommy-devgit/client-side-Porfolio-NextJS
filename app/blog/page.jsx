@@ -1,8 +1,27 @@
 async function getBlogs() {
-  const res = await fetch("http://localhost:5000/api/blogs", {
+  const res = await fetch("http://localhost:5000/api/blog", {
     cache: "no-store",
   });
-  return res.json();
+
+  const contentType = res.headers.get("content-type") || "";
+  const clone = res.clone();
+
+  if (!res.ok) {
+    const bodyText = await clone.text().catch(() => "<body unavailable>");
+    throw new Error(`Failed fetching blog posts: ${res.status} ${res.statusText} - ${bodyText}`);
+  }
+
+  if (contentType.includes("text/html")) {
+    const bodyText = await clone.text().catch(() => "<body unavailable>");
+    throw new Error(`Expected JSON but received HTML from API: ${bodyText.slice(0,200)}`);
+  }
+
+  try {
+    return await res.json();
+  } catch (err) {
+    const bodyText = await clone.text().catch(() => "<body unavailable>");
+    throw new Error(`Invalid JSON response from API: ${err.message}. Response body: ${bodyText.slice(0,200)}`);
+  }
 }
 
 export default async function BlogPage() {
