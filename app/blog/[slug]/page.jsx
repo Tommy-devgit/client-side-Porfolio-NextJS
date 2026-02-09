@@ -37,7 +37,14 @@ export default async function PostPage({ params }) {
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-[#0b0f1a]" />
           </div>
 
-          <div className="relative z-10 max-w-4xl mx-auto px-6 pt-24 pb-16">
+          <div className="relative z-10 max-w-4xl mx-auto px-6 pt-20 pb-16">
+            <a
+              href="/blog"
+              className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-sky-200/80 hover:text-sky-200 transition"
+            >
+              <span aria-hidden="true">←</span>
+              Back to Blog
+            </a>
             <p className="text-xs uppercase tracking-[0.4em] text-sky-300/80">
               {new Date(post.createdAt).toLocaleDateString()}
             </p>
