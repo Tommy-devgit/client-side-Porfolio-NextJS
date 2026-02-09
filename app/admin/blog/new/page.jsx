@@ -3,81 +3,141 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function NewPost() {
+export default function NewPostPage() {
   const router = useRouter();
 
-  const [form, setForm] = useState({
-    title: "",
-    excerpt: "",
-    content: "",
-    published: false,
-  });
+  const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
+  const [excerpt, setExcerpt] = useState("");
+  const [content, setContent] = useState("");
+  const [published, setPublished] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setForm({
-      ...form,
-      [name]: type === "checkbox" ? checked : value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const slug = form.title
+  function generateSlug(value) {
+    return value
       .toLowerCase()
-      .replace(/ /g, "-")
-      .replace(/[^\w-]+/g, "");
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)+/g, "");
+  }
 
-    await fetch("http://localhost:5000/api/posts", {
+  function handleFileChange(file) {
+    if (!file) return;
+    setSelectedFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+
+    const fd = new FormData();
+    fd.append("title", title);
+    fd.append("slug", slug || generateSlug(title));
+    fd.append("excerpt", excerpt);
+    fd.append("content", content);
+    fd.append("published", published ? "true" : "false");
+    if (selectedFile) fd.append("image", selectedFile);
+
+    const res = await fetch("http://localhost:5000/api/posts", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, slug }),
+      body: fd,
     });
 
-    router.push("/admin/blog");
-  };
+    setLoading(false);
+
+    if (res.ok) {
+      router.push("/admin/blog");
+    } else {
+      const data = await res.json().catch(() => ({}));
+      alert(data.error || "Failed to create post");
+    }
+  }
 
   return (
     <div className="p-8 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">New Blog Post</h1>
+      <h1 className="text-2xl font-bold mb-6">New Blog Post</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          name="title"
-          placeholder="Title"
-          className="w-full border p-3 rounded"
-          onChange={handleChange}
-          required
-        />
-
-        <textarea
-          name="excerpt"
-          placeholder="Short excerpt"
-          className="w-full border p-3 rounded"
-          onChange={handleChange}
-        />
-
-        <textarea
-          name="content"
-          placeholder="Blog content"
-          rows={10}
-          className="w-full border p-3 rounded"
-          onChange={handleChange}
-          required
-        />
-
-        <label className="flex items-center gap-2">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label className="block text-sm font-medium mb-1">Title</label>
           <input
-            type="checkbox"
-            name="published"
-            onChange={handleChange}
+            type="text"
+            className="w-full border rounded p-2"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            onBlur={() => {
+              if (!slug) setSlug(generateSlug(title));
+              if (!excerpt && content) setExcerpt(content.substring(0, 120) + "...");
+            }}
+            required
           />
-          Publish immediately
-        </label>
+        </div>
 
-        <button className="bg-black text-white px-6 py-3 rounded">
-          Create Post
+        <div>
+          <label className="block text-sm font-medium mb-1">Slug</label>
+          <input
+            type="text"
+            className="w-full border rounded p-2"
+            value={slug}
+            onChange={(e) => setSlug(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Excerpt</label>
+          <input
+            type="text"
+            className="w-full border rounded p-2"
+            value={excerpt}
+            onChange={(e) => setExcerpt(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Content</label>
+          <textarea
+            rows={8}
+            className="w-full border rounded p-2"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Cover image</label>
+          <div className="flex items-center gap-4">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleFileChange(e.target.files?.[0])}
+              disabled={loading}
+            />
+          </div>
+          {previewUrl && (
+            <div className="mt-3">
+              <img src={previewUrl} alt={excerpt || title} className="w-full max-h-48 object-cover rounded" />
+            </div>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <input
+            id="published"
+            type="checkbox"
+            checked={published}
+            onChange={(e) => setPublished(e.target.checked)}
+          />
+          <label htmlFor="published">Publish immediately</label>
+        </div>
+
+        <button
+          disabled={loading}
+          className="px-4 py-2 bg-black text-white rounded"
+        >
+          {loading ? "Saving..." : "Create Post"}
         </button>
       </form>
     </div>

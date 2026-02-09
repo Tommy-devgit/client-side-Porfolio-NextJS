@@ -1,46 +1,53 @@
-async function getBlogs() {
-  const res = await fetch("http://localhost:5000/api/posts/public", {
-    next: { revalidate: 3600 },
+async function getPosts() {
+  const res = await fetch("http://localhost:5000/api/posts", {
+    cache: "no-store",
   });
 
-  const contentType = res.headers.get("content-type") || "";
-  const clone = res.clone();
-
   if (!res.ok) {
-    const bodyText = await clone.text().catch(() => "<body unavailable>");
-    throw new Error(`Failed fetching posts: ${res.status} ${res.statusText} - ${bodyText}`);
+    throw new Error("Failed to fetch posts");
   }
 
-  if (contentType.includes("text/html")) {
-    const bodyText = await clone.text().catch(() => "<body unavailable>");
-    throw new Error(`Expected JSON but received HTML from API: ${bodyText.slice(0, 200)}`);
-  }
-
-  try {
-    return await res.json();
-  } catch (err) {
-    const bodyText = await clone.text().catch(() => "<body unavailable>");
-    throw new Error(`Invalid JSON response from API: ${err.message}. Response body: ${bodyText.slice(0,200)}`);
-  }
+  return res.json();
 }
 
-export default async function BlogPage() {
-  const blogs = await getBlogs();
+import DeleteButton from "../../../components/DeleteButton";
+
+export default async function AdminBlogPage() {
+  const posts = await getPosts();
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-4xl font-bold mb-8">Blog</h1>
+    <div className="p-8 max-w-5xl mx-auto">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold">Blog Posts</h1>
+        <a
+          href="/admin/blog/new"
+          className="px-4 py-2 bg-black text-white rounded"
+        >
+          New Post
+        </a>
+      </div>
 
-      <div className="space-y-6">
-        {blogs.map((blog) => (
-          <a
-            key={blog.id}
-            href={`/blog/${blog.slug}`}
-            className="block border p-6 rounded hover:bg-gray-50"
+      <div className="space-y-4">
+        {posts.map((post) => (
+          <div
+            key={post._id}
+            className="border rounded p-4 flex items-center justify-between"
           >
-            <h2 className="text-2xl font-semibold">{blog.title}</h2>
-            <p className="text-gray-600 mt-2">{blog.excerpt}</p>
-          </a>
+            <div>
+              <h2 className="font-semibold">{post.title}</h2>
+              <p className="text-sm text-gray-500">
+                {post.published ? "Published" : "Draft"}
+              </p>
+            </div>
+
+            <div className="flex gap-3 items-center">
+              <a href={`/admin/blog/${post._id}/edit`} className="text-sm underline">Edit</a>
+
+
+              <DeleteButton postId={post._id} />
+            </div>
+
+          </div>
         ))}
       </div>
     </div>

@@ -37,9 +37,9 @@
 -------------------------------- */
 :root {
   --radius: 0.625rem;
-  --background: #1c1c22;
+  --background: #000000;
   --foreground: #ffffff;
-  --primary: #1c1c22;
+  --primary: #000000;
   --primary-foreground: #ffffff;
   --accent: #0087e1;
   --accent-hover: #00aaff;
