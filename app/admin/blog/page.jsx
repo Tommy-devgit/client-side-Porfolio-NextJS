@@ -1,5 +1,6 @@
 async function getPosts() {
-  const res = await fetch("http://localhost:5000/api/posts", {
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
+  const res = await fetch(`${API_BASE}/api/posts`, {
     cache: "no-store",
   });
 

@@ -14,7 +14,8 @@ export default async function EditPostPage({ params }) {
   }
 
   try {
-    const res = await fetch(`http://localhost:5000/api/posts/${encodeURIComponent(postId)}`, { cache: "no-store" });
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
+  const res = await fetch(`${API_BASE}/api/posts/${encodeURIComponent(postId)}`, { cache: "no-store" });
     if (!res.ok) {
       const body = await res.text().catch(() => "");
       throw new Error(`Failed to fetch post: ${res.status} ${res.statusText} ${body}`);

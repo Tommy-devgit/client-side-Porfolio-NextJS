@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
+
 export default function NewPostPage() {
   const router = useRouter();
 
@@ -40,7 +42,7 @@ export default function NewPostPage() {
     fd.append("published", published ? "true" : "false");
     if (selectedFile) fd.append("image", selectedFile);
 
-    const res = await fetch("http://localhost:5000/api/posts", {
+    const res = await fetch(`${API_BASE}/api/posts`, {
       method: "POST",
       body: fd,
     });

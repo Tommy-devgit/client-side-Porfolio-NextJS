@@ -8,7 +8,8 @@ export default function DeleteButton({ postId }) {
   async function handleDelete() {
     if (!confirm("Delete this post?")) return;
 
-    const res = await fetch(`http://localhost:5000/api/posts/${postId}`, {
+    const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
+    const res = await fetch(`${API_BASE}/api/posts/${postId}`, {
       method: "DELETE",
     });
 
