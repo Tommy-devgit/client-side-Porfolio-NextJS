@@ -9,38 +9,71 @@ async function getPosts() {
 export default async function BlogPage() {
   const posts = await getPosts();
   return (
-    <main className="min-h-screen bg-gray-50">
-      <header className="bg-gradient-to-r from-sky-600 to-indigo-600 text-white py-20">
-        <div className="max-w-5xl mx-auto px-6">
-          <h1 className="text-5xl font-extrabold drop-shadow-md">Thoughts & Notes</h1>
-          <p className="mt-3 text-lg opacity-90 max-w-2xl">I write about web development, design, and the occasional tutorial. Browse recent posts below.</p>
-        </div>
-      </header>
+    <main className="min-h-screen bg-[#0b0f1a] text-slate-100">
+      <div className="relative overflow-hidden">
+        <div className="pointer-events-none absolute -top-40 -right-20 h-96 w-96 rounded-full bg-sky-500/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-32 -left-24 h-96 w-96 rounded-full bg-indigo-500/20 blur-3xl" />
 
-      <section className="max-w-5xl mx-auto px-6 py-12">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post) => (
+        <header className="relative z-10 max-w-6xl mx-auto px-6 pt-20 pb-12">
+          <p className="text-xs uppercase tracking-[0.4em] text-sky-300/80">Journal</p>
+          <h1 className="mt-4 text-5xl md:text-6xl font-[600] leading-tight text-white">
+            Thoughts & Notes
+          </h1>
+          <p className="mt-4 max-w-2xl text-lg text-slate-300">
+            Essays on web craft, design, and the odd tutorial. Fresh ideas, sharp edges, and practical takeaways.
+          </p>
+        </header>
+      </div>
+
+      <section className="relative z-10 max-w-6xl mx-auto px-6 pb-20">
+        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+          {posts.map((post, idx) => (
             <a
               key={post._id}
               href={`/blog/${post.slug}`}
-              className="block bg-white rounded-lg shadow hover:shadow-lg transition-shadow p-5"
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 shadow-[0_20px_60px_-40px_rgba(15,23,42,0.9)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_80px_-50px_rgba(14,165,233,0.45)]"
             >
-              <div className="h-40 w-full bg-gray-100 rounded-md mb-4 flex items-center justify-center text-gray-400"> 
-                <span className="text-sm">No Image</span>
+              <div className="relative h-48">
+                {post.image?.url ? (
+                  <img
+                    src={post.image.url}
+                    alt={post.image?.alt || post.title}
+                    className="h-48 w-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="h-48 w-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-slate-500 text-sm">
+                    No Image
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
               </div>
 
-              <h2 className="text-lg font-semibold mb-2">{post.title}</h2>
-              <p className="text-sm text-gray-500 mb-3">{new Date(post.createdAt).toLocaleDateString()}</p>
-              <p className="text-gray-600 text-sm line-clamp-3 mb-4">{post.excerpt}</p>
+              <div className="p-6">
+                <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+                  {new Date(post.createdAt).toLocaleDateString()}
+                </p>
+                <h2 className="mt-3 text-xl font-[600] text-white group-hover:text-sky-200 transition-colors">
+                  {post.title}
+                </h2>
+                <p className="mt-3 text-sm text-slate-300 line-clamp-3">
+                  {post.excerpt}
+                </p>
 
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-sky-600 font-medium">Read more →</span>
-                <span className="text-gray-400">{post.published ? "Published" : "Draft"}</span>
+                <div className="mt-6 flex items-center justify-between text-sm text-slate-400">
+                  <span className="font-medium text-sky-300">Read more →</span>
+                  <span className="rounded-full border border-white/10 px-2 py-0.5 text-xs">
+                    {post.published ? "Published" : "Draft"}
+                  </span>
+                </div>
               </div>
+
+              <div className="absolute inset-0 ring-1 ring-white/5 transition duration-300 group-hover:ring-sky-400/40" />
             </a>
           ))}
         </div>
       </section>
+
     </main>
   );
 }
