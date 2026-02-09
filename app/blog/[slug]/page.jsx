@@ -1,11 +1,20 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 
 async function getPost(slug) {
-  const res = await fetch(
-    `${API_BASE}/api/posts/public/${slug}`,
-    { cache: "no-store" }
-  );
-  return res.json();
+  try {
+    const res = await fetch(
+      `${API_BASE}/api/posts/public/${slug}`,
+      { cache: "no-store" }
+    );
+    if (!res.ok) {
+      console.error("Failed to fetch post:", res.status, res.statusText);
+      return null;
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Failed to fetch post:", error);
+    return null;
+  }
 }
 
 export default async function PostPage({ params }) {
