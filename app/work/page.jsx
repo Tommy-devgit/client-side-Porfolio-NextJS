@@ -1,208 +1,168 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion";
-import React, { useState } from "react"
-
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-
+import React, { useMemo, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { BsArrowUpRight, BsGithub } from "react-icons/bs";
 
-import { 
-    Tooltip, 
-    TooltipContent, 
-    TooltipProvider, 
-    TooltipTrigger 
-} from "@/components/ui/tooltip";
-
-import Link from "next/link";
-import Image from "next/image";
-import WorkSliderBtns from "@/components/WorkSliderBtns";
-
 const projects = [
-    {
-        num: '01',
-        category: "frontend",
-        title: "project 1",
-        description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas tempore ut, accusantium sunt.",
-        stack: [
-            { name: "Html 5"},
-            { name: "Css 3"},
-            { name: "Javascript"}
-        ],
-        image: "/assets/work/thumb1.png",
-        live: "",
-        github: "",
-    },
-    {
-        num: '02',
-        category: "backend",
-        title: "project 2",
-        description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas tempore ut, accusantium sunt.",
-        stack: [
-            { name: "Next.js"},
-            { name: "Tailwind.css"},
-            { name: "Node.js"}
-        ],
-        image: "/assets/work/thumb2.png",
-        live: "",
-        github: "",
-    },
-    {
-        num: '03',
-        category: "fullstack",
-        title: "project 3",
-        description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas tempore ut, accusantium sunt.",
-        stack: [
-            { name: "React.js"},
-            { name: "Tailwind.css"},
-            { name: "Node.js/Express.js"}
-        ],
-        image: "/assets/work/thumb3.png",
-        live: "",
-        github: "",
-    },
+  {
+    title: "Phone Plaza",
+    description:
+      "E-commerce platform for buying and selling smartphones with user reviews and ratings.",
+    image: "/assets/work/projectImg1.png",
+    github: "https://github.com/Tommy-devgit",
+    demo: "https://phone-plazaa.vercel.app/",
+    tags: ["React.js", "Node.js", "Firebase", "Cloudinary"],
+  },
+  {
+    title: "Blogger",
+    description:
+      "A full-stack blogging platform with rich text editing, image uploads, and SEO-friendly URLs.",
+    image: "/assets/work/projectImg2.png",
+    github: "https://github.com/Tommy-devgit",
+    demo: "https://blog-app-react-umber.vercel.app/",
+    tags: ["React.js", "Tailwind", "Supabase", "Cloudinary"],
+  },
+  {
+    title: "UI Systems Lab",
+    description:
+      "Exploration of reusable UI patterns, glassmorphism cards, and motion-driven layout.",
+    image: "/assets/work/projectImg3.png",
+    github: "https://github.com/Tommy-devgit",
+    demo: "https://client-side-porfolio-next-js.vercel.app/work",
+    tags: ["React", "Framer Motion", "UI/UX"],
+  },
+  {
+    title: "API Dashboard",
+    description:
+      "Admin dashboard to manage posts with inline editing, preview, and secure updates.",
+    image: "/assets/work/thumb4.png",
+    github: "https://github.com/Tommy-devgit",
+    demo: "https://client-side-porfolio-next-js.vercel.app/admin/blog",
+    tags: ["Express", "JWT", "Admin UX"],
+  },
+  {
+    title: "Service Landing",
+    description:
+      "Conversion-first landing page with responsive sections and custom animations.",
+    image: "/assets/work/thumb5.png",
+    github: "https://github.com/Tommy-devgit",
+    demo: "https://client-side-porfolio-next-js.vercel.app/services",
+    tags: ["Marketing", "Tailwind", "SEO"],
+  },
+  {
+    title: "Project Showcase",
+    description:
+      "A grid-based project showcase with pagination and performance-first image loading.",
+    image: "/assets/work/thumb6.png",
+    github: "https://github.com/Tommy-devgit",
+    demo: "https://client-side-porfolio-next-js.vercel.app/work",
+    tags: ["UI Systems", "Grid", "Performance"],
+  },
 ];
 
-const Work = () => {
-    const [project, setProject] = useState(projects[0]);
-    const handleSlideChange = (swiper) => {
+const PAGE_SIZE = 4;
 
-        const currentIndex = swiper.activeIndex;
+export default function WorkPage() {
+  const [page, setPage] = useState(1);
+  const totalPages = Math.max(1, Math.ceil(projects.length / PAGE_SIZE));
 
-        setProject(projects[currentIndex]);
-    };
+  const pageItems = useMemo(() => {
+    const start = (page - 1) * PAGE_SIZE;
+    return projects.slice(start, start + PAGE_SIZE);
+  }, [page]);
 
-    return (
-        <motion.section
-            initial={{opacity: 0}}
-            animate={{opacity: 1, transition: {delay:2.4, duration: 0.4, ease: "easeIn"}}}
-            className="min-h-[80vh] flex flex-col justify-center py-12 xl:px-0"
-        >
-            <div className="container mx-auto">
-                <div className="flex flex-col xl:flex-row xl:gap-[30px]">
-                    <div 
-                        className="w-full xl:w-[50%] xl:h-[460px] 
-                        flex flex-col xl:justify-between order-2 
-                            xl:order-0">
-                            <div className="flex flex-col gap-[30px] h-[50%]">
-                                {/* outliner num */}
-                                <div 
-                                    className="text-8xl leading-none 
-                                    font-extrabold text-transparent 
-                                    text-outline">
-                                    {project.num}
-                                </div>
-                                {/* project category */}
-                                <h2
-                                className="text-[42px] font-bold leading-none 
-                                text-white group-hover:text-accent 
-                                transition-all duration-500 capitalize">
-                                    {project.category} project
-                                </h2>
-                                {/* project description */}
-                                <p className="text-white/60 ">
-                                    {project.description}
-                                </p>
-                                {/* stack */}
-                                <ul className="flex gap-4">
-                                    {project.stack.map((item, index) => {
-                                        return <li key={index} className="text-xl text-accent">
-                                            {item.name}
-                                            {/* remove the last comma */}
-                                            {index !== project.stack.length - 1&& ","}
-                                        </li>
-                                    })}
-                                </ul>
-                                {/* border */}
-                                <div className="border borde-white/20">
-                                    
-                                </div>
-                                {/* buttons */}
-                                <div className="flex items-center gap-4">
-                                {/* live project button */}
-                                <Link href={project.live}>
-                                    <TooltipProvider delayDuration={100}>
-                                        <Tooltip>
-                                            <TooltipTrigger className="w-[70px] h-[70px] rounded-full bg-white/5 flex justify-center items-center group">
-                                                <BsArrowUpRight className="text-white text-3xl group-hover:text-accent"/>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                <p>Live Project</p>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </Link>
-                                {/* github project button */}
-                                <Link href={project.github}>
-                                    <TooltipProvider delayDuration={100}>
-                                        <Tooltip>
-                                            <TooltipTrigger 
-                                                className="w-[70px] h-[70px] rounded-full 
-                                                bg-white/5 flex justify-center 
-                                                items-center group">
-                                                <BsGithub
-                                                    className="text-white text-3xl 
-                                                    group-hover:text-accent"/>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                <p>Github Repo</p>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="w-full xl:w-[50%]">
-                        <Swiper 
-                            spaceBetween={30}
-                            slidesPerView={1}
-                            className="xl:h-[520px] mb-12"
-                            onSlideChange={handleSlideChange}
-                        >
-                            {projects.map((project, index) => {
-                                return (
-                                    <SwiperSlide 
-                                    key={index}
-                                    className="w-full">
-                                        <div 
-                                            className="h-[460px] relative group flex 
-                                            justify-center items-center bg-pink-50/20">
-                                            {/* overlay */ }
-                                            <div className="absolute top-0 bottom-0 w-full h-full bg-black/10"></div>
-                                            {/* image */}
-                                            <div className="relative w-full h-full">
-                                               <Image 
-                                                src={project.image}
-                                                fill
-                                                className="object-cover"
-                                                alt=""
-                                                />
-                                            </div>
-                                        </div>
-                                    </SwiperSlide>
-                                );
-                            })}
-                            {/* Slider Buttons */}
-                            <WorkSliderBtns 
-                                containerStyles="flex gap-2 absolute right-0 
-                                bottom-[calc(50%_-_22px)] xl:bottom-0 z-20 
-                                w-full justify-between xl:w-max xl:justify-none"
-                                btnStyles="bg-accent hover:bg-accent-hover 
-                                text-primary text-[22px] w-[44px] h-[44px] 
-                                flex justify-center items-center transition-all"
-                            />
-                        </Swiper>
-                    </div>
+  return (
+    <section className="min-h-screen bg-[#0b0f1a] text-slate-100 py-16">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="flex flex-col gap-4 mb-12">
+          <p className="text-xs uppercase tracking-[0.4em] text-sky-300/80">Work</p>
+          <h1 className="text-4xl md:text-5xl font-semibold text-white">
+            Projects That Ship
+          </h1>
+          <p className="max-w-2xl text-lg text-slate-300">
+            Selected builds across product, platform, and UI systems. Each card includes
+            a quick snapshot, GitHub access, and a live demo.
+          </p>
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-2">
+          {pageItems.map((project) => (
+            <article
+              key={project.title}
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 shadow-[0_24px_70px_-50px_rgba(14,165,233,0.5)]"
+            >
+              <div className="relative h-56 w-full overflow-hidden">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover transition duration-500 group-hover:scale-[1.03]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+              </div>
+
+              <div className="p-6 space-y-4">
+                <div>
+                  <h2 className="text-2xl font-semibold text-white">{project.title}</h2>
+                  <p className="mt-2 text-sm text-slate-300">{project.description}</p>
                 </div>
-            </div>
-        </motion.section>
 
-    );
+                <ul className="flex flex-wrap gap-2 text-xs text-slate-300">
+                  {project.tags.map((tag) => (
+                    <li
+                      key={tag}
+                      className="rounded-full border border-white/10 px-3 py-1"
+                    >
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="flex items-center gap-4">
+                  <Link
+                    href={project.demo}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-sm text-sky-200 hover:border-sky-400/60 hover:text-white transition"
+                    target="_blank"
+                  >
+                    Live Demo <BsArrowUpRight />
+                  </Link>
+                  <Link
+                    href={project.github}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-sm text-slate-200 hover:border-white/40 hover:text-white transition"
+                    target="_blank"
+                  >
+                    GitHub <BsGithub />
+                  </Link>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-12 flex items-center justify-center gap-4">
+          <button
+            type="button"
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="rounded-full border border-white/10 px-4 py-2 text-sm text-slate-200 disabled:opacity-40"
+          >
+            Previous
+          </button>
+          <span className="text-sm text-slate-400">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            type="button"
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+            className="rounded-full border border-white/10 px-4 py-2 text-sm text-slate-200 disabled:opacity-40"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </section>
+  );
 }
-
-export default Work;

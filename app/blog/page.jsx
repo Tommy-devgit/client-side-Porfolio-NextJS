@@ -23,7 +23,7 @@ export default async function BlogPage() {
   const posts = await getPosts();
   return (
     <main className="min-h-screen bg-[#0b0f1a] text-slate-100">
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden m-4">
         <div className="pointer-events-none absolute -top-40 -right-20 h-96 w-96 rounded-full bg-sky-500/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-32 -left-24 h-96 w-96 rounded-full bg-indigo-500/20 blur-3xl" />
 
