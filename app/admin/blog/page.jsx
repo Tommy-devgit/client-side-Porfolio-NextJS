@@ -22,7 +22,7 @@ export default async function AdminBlogPage() {
         <h1 className="text-2xl font-bold">Blog Posts</h1>
         <a
           href="/admin/blog/new"
-          className="px-4 py-2 bg-black text-white rounded"
+          className="px-4 py-2 bg-black text-white rounded border borde-2"
         >
           New Post
         </a>
