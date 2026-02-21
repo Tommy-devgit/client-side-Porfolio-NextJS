@@ -25,7 +25,7 @@ const Photo = () => {
           "
         >
           <Image
-            src="/assets/photo.jpg"
+            src="/assets/photo3.png"
             alt="Photo"
             fill
             priority

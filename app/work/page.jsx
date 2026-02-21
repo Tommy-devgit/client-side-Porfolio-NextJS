@@ -25,31 +25,31 @@ const projects = [
     tags: ["React.js", "Tailwind", "Supabase", "Cloudinary"],
   },
   {
-    title: "UI Systems Lab",
+    title: "Cinetrack",
     description:
-      "Exploration of reusable UI patterns, glassmorphism cards, and motion-driven layout.",
+      "Movie discovery app with real-time search, personalized watchlists, and seamless streaming integration.",
     image: "/assets/work/projectImg3.png",
     github: "https://github.com/Tommy-devgit",
     demo: "https://client-side-porfolio-next-js.vercel.app/work",
-    tags: ["React", "Framer Motion", "UI/UX"],
+    tags: ["React", "TMDB API", "Tailwind", "FIrebase"],
   },
   {
-    title: "API Dashboard",
+    title: "Hospital Management System",
     description:
-      "Admin dashboard to manage posts with inline editing, preview, and secure updates.",
+      "A comprehensive hospital management system with patient records, appointment scheduling, and billing features.",
     image: "/assets/work/thumb4.png",
     github: "https://github.com/Tommy-devgit",
     demo: "https://client-side-porfolio-next-js.vercel.app/admin/blog",
-    tags: ["Express", "JWT", "Admin UX"],
+    tags: ["Next.js", "Node.js", "MongoDB", "..."],
   },
   {
-    title: "Service Landing",
+    title: "Blanime",
     description:
-      "Conversion-first landing page with responsive sections and custom animations.",
+      "An anime streaming platform with a vast library, user reviews, and personalized recommendations.",
     image: "/assets/work/thumb5.png",
     github: "https://github.com/Tommy-devgit",
     demo: "https://client-side-porfolio-next-js.vercel.app/services",
-    tags: ["Marketing", "Tailwind", "SEO"],
+    tags: ["Next.js", "Tailwind", "MongoDB", "..."],
   },
   {
     title: "Project Showcase",
