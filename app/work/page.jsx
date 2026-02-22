@@ -62,6 +62,8 @@ const projects = [
   },
 ];
 
+
+
 const PAGE_SIZE = 4;
 
 export default function WorkPage() {

@@ -15,6 +15,8 @@ import {
     SiTailwindcss, SiNextdotjs
 } from "react-icons/si";
 
+
+
 // about data
 const about =  {
 

@@ -15,9 +15,14 @@ const jetbrainsMono = JetBrains_Mono({
 
 
 export const metadata = {
-  title: "Tomas Melesse ",
-  description: "",
+  title: {
+    default: "Tomas Melesse",
+    template: "%s | Tomas Melesse",
+  },
+  description: "Portfolio of Tomas Melesse",
 };
+
+
 
 export default function RootLayout({ children }) {
   return (

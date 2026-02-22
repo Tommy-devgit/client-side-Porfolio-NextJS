@@ -2,6 +2,10 @@ export const dynamic = "force-dynamic";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 
+export const metadata = {
+  title: "Blog",
+};
+
 async function getPosts() {
   try {
     const res = await fetch(
